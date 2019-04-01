@@ -1,12 +1,15 @@
 package com.epam.training.toto.domain;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Round {
     private int year;
     private int week;
     private int roundOfWeek;
     private LocalDate date;
+    private List<Hit> hits;
+    private List<Outcome> outcomes;
 
     public Round() {
     }
@@ -42,6 +45,22 @@ public class Round {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public List<Hit> getHits() {
+        return hits;
+    }
+
+    public void setHits(List<Hit> hits) {
+        this.hits = hits;
+    }
+
+    public List<Outcome> getOutcomes() {
+        return outcomes;
+    }
+
+    public void setOutcomes(List<Outcome> outcomes) {
+        this.outcomes = outcomes;
     }
 
     //endregion
