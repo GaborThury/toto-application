@@ -198,13 +198,23 @@ public class TotoService {
         while (invalidOutcomes) {
             System.out.println("Please enter the outcomes:");
             enteredOutcomes = scanner.nextLine();
-            if (enteredOutcomes.length() != 14) {
+            if (enteredOutcomes.length() != 14 || areInvalidCharacters(enteredOutcomes)) {
                 System.out.println("The outcomes you have entered are not valid!");
             } else {
                 invalidOutcomes = false;
             }
         }
         return enteredOutcomes;
+    }
+
+    private boolean areInvalidCharacters(String enteredOutcomes) {
+        for (int i = 0; i < enteredOutcomes.length(); i++) {
+            char c = enteredOutcomes.toUpperCase().charAt(i);
+            if (c != '1' && c != '2' && c != 'X') {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int calculateDaysOfYear(int weeks, int roundOfWeek) {
