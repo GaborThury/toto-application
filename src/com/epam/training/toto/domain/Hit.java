@@ -23,4 +23,13 @@ public class Hit {
     public int getPrize() {
         return prize;
     }
+
+    @Override
+    public String toString() {
+        return "Hit{" +
+                "hitCount=" + hitCount +
+                ", numberOfWagers=" + numberOfWagers +
+                ", prize=" + prize +
+                '}';
+    }
 }

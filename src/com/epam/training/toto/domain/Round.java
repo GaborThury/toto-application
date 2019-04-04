@@ -66,5 +66,15 @@ public class Round {
     //endregion
 
 
-
+    @Override
+    public String toString() {
+        return "Round{" +
+                "year=" + year +
+                ", week=" + week +
+                ", roundOfWeek=" + roundOfWeek +
+                ", date=" + date +
+                ", hits=" + hits +
+                ", outcomes=" + outcomes +
+                '}';
+    }
 }
