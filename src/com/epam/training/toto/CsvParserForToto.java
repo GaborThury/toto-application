@@ -10,17 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CsvParser {
+public class CsvParserForToto {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.d.");
 
-    public List<Round> parseCsv(List<List<String>> lists) {
+    public List<Round> parseCsvToRounds(List<List<String>> lists) {
         List<Round> rounds = new ArrayList<>();
         lists.forEach((c) -> {
             Round round = new Round();
             round.setYear(Integer.parseInt(c.get(0)));
             round.setWeek(Integer.parseInt(c.get(1)));
             round.setRoundOfWeek(parseRoundOfWeek(c.get(2)));
-            round.setDate(parseDate(c.get(3)));
+            round.setDate(
+                    parseDate(
+                        c.get(3),
+                        round.getYear(),
+                        round.getWeek(),
+                        round.getRoundOfWeek()
+            ));
             round.setHits(parseHits(c.subList(4, 14)));
             round.setOutcomes(parseOutcomes(c.subList(14, 28)));
             rounds.add(round);
@@ -28,9 +34,11 @@ public class CsvParser {
         return rounds;
     }
 
-    private LocalDate parseDate(String date) {
-        // TODO: create date value if it is an empty string
-        return date.isEmpty() ? null : LocalDate.parse(date, FORMATTER);
+    private LocalDate parseDate(String date, int year, int week, int roundOfWeek) {
+        if (date.isEmpty()) {
+            return LocalDate.ofYearDay(year, calculateDaysOfYear(week, roundOfWeek));
+        }
+        return LocalDate.parse(date, FORMATTER);
     }
 
 
@@ -63,8 +71,23 @@ public class CsvParser {
     }
 
     private List<Outcome> parseOutcomes(List<String> list) {
-        List<Outcome> outcomes = new ArrayList<>();
-        for (String s : list) {
+        List<Outcome> outcomes;
+
+        outcomes = list.stream().map(s -> {
+            String outcome = s.replaceAll("\\+", "").toUpperCase();
+            switch (outcome) {
+                case "1":
+                    return Outcome._1;
+                case "2":
+                    return Outcome._2;
+                case "X":
+                    return Outcome.X;
+                    default:
+                        return null;
+            }
+        }).collect(Collectors.toList());
+
+/*        for (String s : list) {
             String outcome = s.replaceAll("\\+", "").toUpperCase();
             switch (outcome) {
                 case "1":
@@ -76,7 +99,7 @@ public class CsvParser {
                 case "X":
                     outcomes.add(Outcome.X);
             }
-        }
+        }*/
         return outcomes;
     }
 

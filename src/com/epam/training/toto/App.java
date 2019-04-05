@@ -8,20 +8,26 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         CsvReader csvReader = new CsvReader();
-        CsvParser csvParser = new CsvParser();
+        CsvParserForToto csvParserForToto = new CsvParserForToto();
         TotoService totoService = new TotoService();
+        StatisticsCalculator statisticsCalculator = new StatisticsCalculator();
+        UserInputReader userInputReader = new UserInputReader();
+        Validator validator = new Validator();
 
         // Give the input file
         List<List<String>> list = csvReader.readFile("toto.csv");
 
         // Parse the input file to rounds
-        List<Round> rounds = csvParser.parseCsv(list);
+        List<Round> rounds = csvParserForToto.parseCsvToRounds(list);
 
-        System.out.println("The largest prize ever won: " + totoService.printLargestPrice(rounds));
-        System.out.println(totoService.printStatistics(rounds));
+        //Print the largest price ever recorded
+        totoService.printLargestPrice(rounds, statisticsCalculator);
+
+        //Print statistics about the outcomes (1 X 2)
+        totoService.printStatistics(rounds, statisticsCalculator);
 
         // Read the user input from console and print the results
-        totoService.calculateHitsForDate(rounds);
+        totoService.calculateHitsForDate(rounds, statisticsCalculator, userInputReader, validator);
 
     }
 }

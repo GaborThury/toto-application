@@ -3,7 +3,7 @@ package com.epam.training.toto.domain;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Round {
+public class Round implements Comparable<Round>{
     private int year;
     private int week;
     private int roundOfWeek;
@@ -76,5 +76,15 @@ public class Round {
                 ", hits=" + hits +
                 ", outcomes=" + outcomes +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Round r) {
+        if (this.getDate().isAfter(r.getDate())) {
+            return 1;
+        } else if (this.getDate().isBefore(r.getDate())) {
+            return -1;
+        }
+        return 0;
     }
 }

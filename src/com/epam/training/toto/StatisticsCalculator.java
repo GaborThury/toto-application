@@ -8,17 +8,16 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.function.Function;
 
+import static java.lang.System.identityHashCode;
 import static java.lang.System.out;
 
 public class StatisticsCalculator {
     private static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.##%");
 
-    public String calculateLargestPrice(List<Round> rounds) {
+    public int calculateLargestPrice(List<Round> rounds) {
         int max = 0;
         for (Round round : rounds) {
             for (Hit hit : round.getHits()) {
@@ -26,13 +25,16 @@ public class StatisticsCalculator {
                 if (value > max) max = value;
             }
         }
-        return NumberFormat.getCurrencyInstance(new Locale("hu", "HU")).format(max);
+        return max;
+        //return NumberFormat.getCurrencyInstance(new Locale("hu", "HU")).format(max);
     }
 
     public String calculateStatistics(List<Round> rounds) {
         double team1Won = 0;
         double team2Won = 0;
         double draw = 0;
+
+//        rounds.stream().map(Round::getOutcomes).filter( outcome ->Outcome._1.equals(outcome.get())));
 
         for (Round round : rounds) {
             for (Outcome outcome : round.getOutcomes()) {
@@ -64,20 +66,30 @@ public class StatisticsCalculator {
         return DECIMALFORMAT.format(outcome / all);
     }
 
-    public void calculateHitsForDate(List<Round> rounds) {
-        Validator validator = new Validator();
-        LocalDate date = validator.getValidDate();
-        String enteredOutcomes = validator.getValidOutcomes();
+    public void calculateHitsForDate(List<Round> rounds, LocalDate date, List<Outcome> userBet) {
         int hitCount = 0;
         int amount = 0;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(localDateToDate(date));
 
+/*        out.println(rounds
+                .stream()
+                .filter(f -> f.getDate().isAfter(date) || f.getDate().isEqual(date))
+                .sorted()
+                .findFirst()
+        );*/
+        Optional<Round> r1 = rounds
+                .stream()
+                .filter(f -> f.getDate().isAfter(date) || f.getDate().isEqual(date))
+                .sorted()
+                .findFirst();
+
+
         for (Round round : rounds) {
             if ((round.getYear() == date.getYear()) && (round.getWeek() == calendar.get(Calendar.WEEK_OF_YEAR))) {
-                for (int i = 0; i < 14; i++) {
-                    String outcome = Character.toString(enteredOutcomes.charAt(i));
-                    if (round.getOutcomes().get(i).toString().contains(outcome)) {
+
+                for (int i = 0; i < userBet.size(); i++) {
+                    if (round.getOutcomes().get(i) == (userBet.get(i))) {
                         hitCount++;
                     }
                 }
@@ -86,7 +98,7 @@ public class StatisticsCalculator {
                 } else {
                     amount = round.getHits().get(14 - hitCount).getPrize();
                 }
-                out.println(round.toString());
+                System.out.println(round.toString());
                 break;
             }
         }
