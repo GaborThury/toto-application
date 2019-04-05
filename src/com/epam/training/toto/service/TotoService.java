@@ -34,12 +34,4 @@ public class TotoService {
     public void calculateHitsForDate(List<Round> rounds) {
         statisticsCalculator.calculateHitsForDate(rounds);
     }
-
-    private int calculateDaysOfYear(int weeks, int roundOfWeek) {
-        return ((weeks * 7) - 6) + roundOfWeek;
-    }
-
-
-
-
 }

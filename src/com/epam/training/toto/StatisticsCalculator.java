@@ -66,8 +66,8 @@ public class StatisticsCalculator {
 
     public void calculateHitsForDate(List<Round> rounds) {
         Validator validator = new Validator();
-        LocalDate date = validator.getValidDateFromConsole();
-        String enteredOutcomes = validator.getValidOutcomesFromConsole();
+        LocalDate date = validator.getValidDate();
+        String enteredOutcomes = validator.getValidOutcomes();
         int hitCount = 0;
         int amount = 0;
         Calendar calendar = Calendar.getInstance();
@@ -86,7 +86,7 @@ public class StatisticsCalculator {
                 } else {
                     amount = round.getHits().get(14 - hitCount).getPrize();
                 }
-                out.println(round.getHits().toString());
+                out.println(round.toString());
                 break;
             }
         }

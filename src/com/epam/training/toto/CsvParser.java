@@ -33,6 +33,7 @@ public class CsvParser {
         return date.isEmpty() ? null : LocalDate.parse(date, FORMATTER);
     }
 
+
     private int parseRoundOfWeek(String s) {
         if (("-").equals(s)) {
             return 0;
@@ -77,5 +78,9 @@ public class CsvParser {
             }
         }
         return outcomes;
+    }
+
+    private int calculateDaysOfYear(int weeks, int roundOfWeek) {
+        return ((weeks * 7) - 6) + roundOfWeek;
     }
 }
