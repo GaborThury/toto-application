@@ -1,4 +1,4 @@
-package com.epam.training.toto;
+package com.epam.training.toto.service;
 
 import com.epam.training.toto.domain.Outcome;
 
@@ -22,15 +22,4 @@ public class Validator {
             throw new IllegalArgumentException();
         }
     }
-
-/*
-    private boolean areInvalidCharacters(List<Outcome> enteredOutcomes) {
-        for (int i = 0; i < enteredOutcomes.size(); i++) {
-            char c = enteredOutcomes.charAt(i);
-            if ((c != '1') && (c != '2') && (c != 'X')) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 }

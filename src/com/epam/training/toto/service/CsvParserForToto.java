@@ -1,4 +1,4 @@
-package com.epam.training.toto;
+package com.epam.training.toto.service;
 
 import com.epam.training.toto.domain.Hit;
 import com.epam.training.toto.domain.Outcome;
@@ -22,11 +22,11 @@ public class CsvParserForToto {
             round.setRoundOfWeek(parseRoundOfWeek(c.get(2)));
             round.setDate(
                     parseDate(
-                        c.get(3),
-                        round.getYear(),
-                        round.getWeek(),
-                        round.getRoundOfWeek()
-            ));
+                            c.get(3),
+                            round.getYear(),
+                            round.getWeek(),
+                            round.getRoundOfWeek()
+                    ));
             round.setHits(parseHits(c.subList(4, 14)));
             round.setOutcomes(parseOutcomes(c.subList(14, 28)));
             rounds.add(round);
@@ -62,7 +62,6 @@ public class CsvParserForToto {
             hits.add(hit);
             hitCounter--;
         }
-        //list.stream().filter(element -> element.contains("Ft")).collect(Collectors.toList());
         return hits;
     }
 
@@ -82,24 +81,10 @@ public class CsvParserForToto {
                     return Outcome._2;
                 case "X":
                     return Outcome.X;
-                    default:
-                        return null;
+                default:
+                    return null;
             }
         }).collect(Collectors.toList());
-
-/*        for (String s : list) {
-            String outcome = s.replaceAll("\\+", "").toUpperCase();
-            switch (outcome) {
-                case "1":
-                    outcomes.add(Outcome._1);
-                    break;
-                case "2":
-                    outcomes.add(Outcome._2);
-                    break;
-                case "X":
-                    outcomes.add(Outcome.X);
-            }
-        }*/
         return outcomes;
     }
 

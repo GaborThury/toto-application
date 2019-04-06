@@ -1,4 +1,4 @@
-package com.epam.training.toto;
+package com.epam.training.toto.service;
 import com.epam.training.toto.domain.Outcome;
 
 import java.time.LocalDate;
@@ -21,8 +21,8 @@ public class UserInputReader {
     public List<Outcome> readOutcomes() {
         System.out.println("Please enter the 14 outcomes (for example: 11xx22x11x22x1):");
         String s = scanner.nextLine().toUpperCase();
-
         List<Outcome> outcomes = new ArrayList<>();
+
         for(char c : s.toCharArray()) {
             switch (c) {
                 case '1':
@@ -35,7 +35,6 @@ public class UserInputReader {
                     outcomes.add(Outcome.X);
             }
         }
-
         return outcomes;
     }
 

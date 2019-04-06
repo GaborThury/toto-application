@@ -1,16 +1,13 @@
 package com.epam.training.toto.service;
 
-import com.epam.training.toto.StatisticsCalculator;
-import com.epam.training.toto.UserInputReader;
-import com.epam.training.toto.Validator;
+import com.epam.training.toto.domain.BetResult;
 import com.epam.training.toto.domain.Outcome;
-import com.epam.training.toto.domain.Price;
 import com.epam.training.toto.domain.Round;
+import com.epam.training.toto.domain.WinCount;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,13 +22,15 @@ public class TotoService {
                 .format(statisticsCalculator.calculateLargestPrice(rounds)));
     }
 
-    public void printStatistics(List<Round> rounds, StatisticsCalculator statisticsCalculator) {
-        out.println(statisticsCalculator.calculateStatistics(rounds));
+    public void printStatisticsAboutAllOutcomes(List<Round> rounds, StatisticsCalculator statisticsCalculator) {
+        WinCount winCount = statisticsCalculator.calculateStatisticsAboutAllOutcomes(rounds);
+        out.println(statisticsCalculator.summarizeStatistics(winCount));
     }
 
-    public void calculateHitsForDate(List<Round> rounds, StatisticsCalculator statisticsCalculator, UserInputReader userInputReader, Validator validator) {
+    public void printUserGivenBetResults(List<Round> rounds, StatisticsCalculator statisticsCalculator, UserInputReader userInputReader, Validator validator) {
         LocalDate localDate;
         List<Outcome> userBet;
+        BetResult betResult;
 
         while (true) {
             try {
@@ -47,6 +46,10 @@ public class TotoService {
                 System.out.println("You entered invalid input!");
             }
         }
-        statisticsCalculator.calculateHitsForDate(rounds, localDate, userBet);
+        betResult = statisticsCalculator.calculateBetResults(rounds, localDate, userBet);
+
+        System.out.printf("The result of you bet: hits: %d, amount: %d Ft", betResult.getHitcount(), betResult.getAmount());
+
+
     }
 }

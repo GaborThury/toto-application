@@ -1,4 +1,4 @@
-package com.epam.training.toto;
+package com.epam.training.toto.service;
 
 import java.io.*;
 import java.util.ArrayList;

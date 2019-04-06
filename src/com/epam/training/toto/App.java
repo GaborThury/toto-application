@@ -1,7 +1,7 @@
 package com.epam.training.toto;
 
 import com.epam.training.toto.domain.Round;
-import com.epam.training.toto.service.TotoService;
+import com.epam.training.toto.service.*;
 
 import java.util.List;
 
@@ -24,10 +24,10 @@ public class App {
         totoService.printLargestPrice(rounds, statisticsCalculator);
 
         //Print statistics about the outcomes (1 X 2)
-        totoService.printStatistics(rounds, statisticsCalculator);
+        totoService.printStatisticsAboutAllOutcomes(rounds, statisticsCalculator);
 
         // Read the user input from console and print the results
-        totoService.calculateHitsForDate(rounds, statisticsCalculator, userInputReader, validator);
+        totoService.printUserGivenBetResults(rounds, statisticsCalculator, userInputReader, validator);
 
     }
 }
