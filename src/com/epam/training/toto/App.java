@@ -1,7 +1,9 @@
 package com.epam.training.toto;
 
+import com.epam.training.toto.domain.CsvRow;
 import com.epam.training.toto.domain.Round;
 import com.epam.training.toto.service.*;
+import com.sun.rowset.internal.Row;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class App {
         Validator validator = new Validator();
 
         // Give the input file
-        List<List<String>> list = csvReader.readFile("toto.csv");
+        List<CsvRow> list = csvReader.readFile("toto.csv");
 
         // Parse the input file to rounds
         List<Round> rounds = csvParserForToto.parseCsvToRounds(list);

@@ -1,9 +1,12 @@
 package com.epam.training.toto.service;
 
+import com.epam.training.toto.domain.CsvRow;
 import com.epam.training.toto.domain.Hit;
 import com.epam.training.toto.domain.Outcome;
 import com.epam.training.toto.domain.Round;
+import com.sun.rowset.internal.Row;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,23 +16,27 @@ import java.util.stream.Collectors;
 public class CsvParserForToto {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.d.");
 
-    public List<Round> parseCsvToRounds(List<List<String>> lists) {
+    public List<Round> parseCsvToRounds(List<CsvRow> lists){
         List<Round> rounds = new ArrayList<>();
         lists.forEach((c) -> {
             Round round = new Round();
-            round.setYear(Integer.parseInt(c.get(0)));
-            round.setWeek(Integer.parseInt(c.get(1)));
-            round.setRoundOfWeek(parseRoundOfWeek(c.get(2)));
-            round.setDate(
-                    parseDate(
-                            c.get(3),
-                            round.getYear(),
-                            round.getWeek(),
-                            round.getRoundOfWeek()
-                    ));
-            round.setHits(parseHits(c.subList(4, 14)));
-            round.setOutcomes(parseOutcomes(c.subList(14, 28)));
-            rounds.add(round);
+            try {
+                round.setYear(Integer.parseInt(c.getColumnObject(1).toString()));
+                round.setWeek(Integer.parseInt(c.getColumnObject(2).toString()));
+                round.setRoundOfWeek(parseRoundOfWeek(c.getColumnObject(3).toString()));
+                round.setDate(
+                        parseDate(
+                                c.getColumnObject(4).toString(),
+                                round.getYear(),
+                                round.getWeek(),
+                                round.getRoundOfWeek()
+                        ));
+                round.setHits(parseHits(c.getRowElements(5, 15)));
+                round.setOutcomes(parseOutcomes(c.getRowElements(15, 29)));
+                rounds.add(round);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
         return rounds;
     }
@@ -50,14 +57,14 @@ public class CsvParserForToto {
         }
     }
 
-    private List<Hit> parseHits(List<String> list) {
+    private List<Hit> parseHits(List<Object> list) {
         List<Hit> hits = new ArrayList<>();
         int hitCounter = 14;
 
         for (int i = 0; i < list.size(); i++) {
-            int numberOfWagers = parseHitAttribute(list.get(i));
+            int numberOfWagers = parseHitAttribute(list.get(i).toString());
             i++;
-            int prize = parseHitAttribute(list.get(i));
+            int prize = parseHitAttribute(list.get(i).toString());
             Hit hit = new Hit(hitCounter, numberOfWagers, prize);
             hits.add(hit);
             hitCounter--;
@@ -69,11 +76,11 @@ public class CsvParserForToto {
         return Integer.parseInt(s.replaceAll("\\s", "").replaceAll("Ft", ""));
     }
 
-    private List<Outcome> parseOutcomes(List<String> list) {
+    private List<Outcome> parseOutcomes(List<Object> list) {
         List<Outcome> outcomes;
 
         outcomes = list.stream().map(s -> {
-            String outcome = s.replaceAll("\\+", "").toUpperCase();
+            String outcome = s.toString().replaceAll("\\+", "").toUpperCase();
             switch (outcome) {
                 case "1":
                     return Outcome._1;

@@ -1,5 +1,7 @@
 package com.epam.training.toto.service;
 
+import com.epam.training.toto.domain.CsvRow;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +9,8 @@ import java.util.Scanner;
 
 public class CsvReader {
 
-    public List<List<String>> readFile(String filename){
-        List<List<String>> records = new ArrayList<>();
+    public List<CsvRow> readFile(String filename) {
+        List<CsvRow> records = new ArrayList<>();
         File file = new File(filename);
         if (!(file.exists())) {
             System.out.println("Invalid file path!");
@@ -25,7 +27,7 @@ public class CsvReader {
         return records;
     }
 
-    private List<String> readSingleLine(String line) {
+    private CsvRow readSingleLine(String line) {
         Scanner rowScanner = new Scanner(line);
         rowScanner.useDelimiter(";");
         List<String> values = new ArrayList<>();
@@ -33,6 +35,6 @@ public class CsvReader {
         while (rowScanner.hasNext()) {
             values.add(rowScanner.next());
         }
-        return values;
+        return new CsvRow(values.size(), values.toArray());
     }
 }
