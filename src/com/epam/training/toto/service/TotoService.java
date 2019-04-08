@@ -15,41 +15,49 @@ import static java.lang.System.out;
 
 public class TotoService {
 
-    public void printLargestPrice(List<Round> rounds, StatisticsCalculator statisticsCalculator) {
+    private StatisticsCalculator statisticsCalculator;
+    private UserInputReader userInputReader;
+
+    public TotoService(StatisticsCalculator statisticsCalculator, UserInputReader userInputReader) {
+        this.statisticsCalculator = statisticsCalculator;
+        this.userInputReader = userInputReader;
+    }
+
+    public void printLargestPrice(List<Round> rounds) {
         out.println("The largest prize ever recorded: " +
                 NumberFormat
                 .getCurrencyInstance(new Locale("hu", "HU"))
                 .format(statisticsCalculator.calculateLargestPrice(rounds)));
     }
 
-    public void printStatisticsAboutAllOutcomes(List<Round> rounds, StatisticsCalculator statisticsCalculator) {
+    public void printStatisticsAboutAllOutcomes(List<Round> rounds) {
         WinCount winCount = statisticsCalculator.calculateStatisticsAboutAllOutcomes(rounds);
-        out.println(statisticsCalculator.summarizeStatistics(winCount));
+        out.println(summarizeStatistics(winCount));
     }
 
-    public void printUserGivenBetResults(List<Round> rounds, StatisticsCalculator statisticsCalculator, UserInputReader userInputReader, Validator validator) {
-        LocalDate localDate;
-        List<Outcome> userBet;
-        BetResult betResult;
+    public void printUserGivenBetResults(List<Round> rounds) {
+        LocalDate localDate = userInputReader.readDate();
+        List<Outcome> userBet = userInputReader.readOutcomes();
 
-        while (true) {
-            try {
-                localDate = userInputReader.readDate();
-                validator.validateDate(localDate);
-                userBet = userInputReader.readOutcomes();
-                validator.validateOutcomes(userBet);
-                break;
-            } catch (DateTimeParseException e) {
-                System.out.println("The date you have entered is not valid!" +
-                        " Please remember to use this format: 2000.01.01.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("You entered invalid input!");
-            }
-        }
-        betResult = statisticsCalculator.calculateBetResults(rounds, localDate, userBet);
-
-        System.out.printf("The result of you bet: hits: %d, amount: %d Ft", betResult.getHitcount(), betResult.getAmount());
-
-
+        BetResult betResult = statisticsCalculator.calculateBetResults(rounds, localDate, userBet);
+        System.out.printf("The result of you bet: hits: %d, amount: %d Ft",
+                betResult.getHitcount(), betResult.getAmount());
     }
+
+    public String summarizeStatistics(WinCount winCount) {
+        double team1Won = winCount.getNumberOfTeam1Wins();
+        double team2Won = winCount.getNumberOfTeam2Wins();
+        double draw = winCount.getNumberOfDraws();
+        double all = team1Won + team2Won + draw;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Statistics: Team #1 won: ");
+        sb.append(statisticsCalculator.countPercentage(team1Won, all));
+        sb.append(", Team #2 won: ");
+        sb.append(statisticsCalculator.countPercentage(team2Won, all));
+        sb.append(", Draws: ");
+        sb.append(statisticsCalculator.countPercentage(draw, all));
+        return sb.toString();
+    }
+
 }

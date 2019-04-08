@@ -35,6 +35,6 @@ public class CsvReader {
         while (rowScanner.hasNext()) {
             values.add(rowScanner.next());
         }
-        return new CsvRow(values.size(), values.toArray());
+        return new CsvRow(values);
     }
 }
