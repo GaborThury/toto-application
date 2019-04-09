@@ -1,15 +1,10 @@
 package com.epam.training.toto.service;
 
-import com.epam.training.toto.domain.BetResult;
-import com.epam.training.toto.domain.Outcome;
-import com.epam.training.toto.domain.Round;
-import com.epam.training.toto.domain.WinCount;
+import com.epam.training.toto.domain.*;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Locale;
 
 import static java.lang.System.out;
 
@@ -24,10 +19,9 @@ public class TotoService {
     }
 
     public void printLargestPrice(List<Round> rounds) {
+        Prize prize = statisticsCalculator.calculateLargestPrize(rounds);
         out.println("The largest prize ever recorded: " +
-                NumberFormat
-                .getCurrencyInstance(new Locale("hu", "HU"))
-                .format(statisticsCalculator.calculateLargestPrice(rounds)));
+                NumberFormat.getIntegerInstance().format(prize.getAmount()) + " " + prize.getCurrency());
     }
 
     public void printStatisticsAboutAllOutcomes(List<Round> rounds) {

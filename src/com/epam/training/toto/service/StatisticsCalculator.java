@@ -10,12 +10,18 @@ import java.util.stream.IntStream;
 public class StatisticsCalculator {
     private static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.##%");
 
-    public int calculateLargestPrice(List<Round> rounds) {
-        return rounds.stream()
+    public Prize calculateLargestPrize(List<Round> rounds) {
+        Prize prize = new Prize();
+        int amount = rounds.stream()
                 .flatMap(r -> r.getHits().stream())
                 .map(Hit::getPrize)
                 .max(Integer::compareTo)
                 .get();
+        Currency currency = Currency.getInstance(new Locale("hu", "HU"));
+        prize.setAmount(amount);
+        prize.setCurrency(currency);
+
+        return prize;
     }
 
     public WinCount calculateStatisticsAboutAllOutcomes(List<Round> rounds) {
