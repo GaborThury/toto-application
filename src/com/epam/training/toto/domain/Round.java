@@ -14,6 +14,15 @@ public class Round implements Comparable<Round>{
     public Round() {
     }
 
+    public Round(int year, int week, int roundOfWeek, LocalDate date, List<Hit> hits, List<Outcome> outcomes) {
+        this.year = year;
+        this.week = week;
+        this.roundOfWeek = roundOfWeek;
+        this.date = date;
+        this.hits = hits;
+        this.outcomes = outcomes;
+    }
+
     //region Getters and Setters
     public int getYear() {
         return year;

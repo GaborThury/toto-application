@@ -11,17 +11,16 @@ public class StatisticsCalculator {
     private static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.##%");
 
     public Prize calculateLargestPrize(List<Round> rounds) {
-        Prize prize = new Prize();
         int amount = rounds.stream()
-                .flatMap(r -> r.getHits().stream())
+                .map(Round::getHits)
+                .flatMap(List::stream)
                 .map(Hit::getPrize)
                 .max(Integer::compareTo)
-                .get();
-        Currency currency = Currency.getInstance(new Locale("hu", "HU"));
-        prize.setAmount(amount);
-        prize.setCurrency(currency);
+                .orElse(0);
 
-        return prize;
+        Currency currency = Currency.getInstance(new Locale("hu", "HU"));
+
+        return new Prize(amount, currency);
     }
 
     public WinCount calculateStatisticsAboutAllOutcomes(List<Round> rounds) {
@@ -61,7 +60,7 @@ public class StatisticsCalculator {
         hitCount = IntStream.range(0, userBet.size())
                 .mapToObj(i -> compareOutcomes(round.getOutcomes().get(i), userBet.get(i)))
                 .reduce(Integer::sum)
-                .get();
+                .orElse(0);
 
 
         if (hitCount >= 10) {

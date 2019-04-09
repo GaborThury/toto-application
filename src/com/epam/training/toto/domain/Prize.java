@@ -6,6 +6,11 @@ public class Prize {
     private int amount;
     private Currency currency;
 
+    public Prize(int amount, Currency currency) {
+        this.amount = amount;
+        this.currency = currency;
+    }
+
     public int getAmount() {
         return amount;
     }
