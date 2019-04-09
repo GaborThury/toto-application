@@ -48,36 +48,29 @@ public class TestStatisticsCalculator {
         assertEquals("0%", statisticsCalculator.countPercentage(0, 5));
     }
 
+    @Test
+    public void testCountOccurrenceOfOutcomes() {
+        List<Outcome> outcomes = generateOutcomes(10,1,3);
+        List<Round> rounds = generateRounds(5, null, outcomes);
+        assertEquals(50, statisticsCalculator.countOccurrenceOfOutcomes(rounds, Outcome._1));
+    }
+
     @After
     public void destroy() {
         statisticsCalculator = null;
     }
 
+
+    //region Generators for tests
     public void generateTestForCalculateLargestPrize(int sizeOfHits, int prizeMultiplier) {
-        List<Round> rounds = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            rounds.add(new Round(0, 0, 0, null, generateHits(sizeOfHits, prizeMultiplier), null));
-        }
+        List<Round> rounds = generateRounds(5, generateHits(sizeOfHits, prizeMultiplier), null);
         Prize prize = new Prize(sizeOfHits * prizeMultiplier, null);
         assertEquals(prize.getAmount(), statisticsCalculator.calculateLargestPrize(rounds).getAmount());
     }
 
-    private List<Hit> generateHits(int sizeOfHits, int prizeMultiplier) {
-        List<Hit> hits = new ArrayList<>();
-        for (int i = 1; i <= sizeOfHits; i++) {
-            Hit hit = new Hit(0, 0, i * prizeMultiplier);
-            hits.add(hit);
-        }
-        return hits;
-    }
-
     private void generateTestForCalculateStatisticsAboutAllOutcomes(int numberOfRounds, int team1won, int team2won, int draw) {
-        List<Round> rounds = new ArrayList<>();
         List<Outcome> outcomes = generateOutcomes(team1won, team2won, draw);
-
-        for (int i = 0; i < numberOfRounds; i++) {
-            rounds.add(new Round(0, 0, 0, null, null, outcomes));
-        }
+        List<Round> rounds = generateRounds(numberOfRounds, null, outcomes);
 
         WinCount winCount = new WinCount();
         winCount.setNumberOfTeam1Wins(team1won * numberOfRounds);
@@ -87,6 +80,23 @@ public class TestStatisticsCalculator {
         assertEquals(winCount.getNumberOfTeam1Wins(), statisticsCalculator.calculateStatisticsAboutAllOutcomes(rounds).getNumberOfTeam1Wins());
         assertEquals(winCount.getNumberOfTeam2Wins(), statisticsCalculator.calculateStatisticsAboutAllOutcomes(rounds).getNumberOfTeam2Wins());
         assertEquals(winCount.getNumberOfDraws(), statisticsCalculator.calculateStatisticsAboutAllOutcomes(rounds).getNumberOfDraws());
+    }
+
+    private List<Round> generateRounds(int numberOfRounds, List<Hit> hits, List<Outcome> outcomes) {
+        List<Round> rounds = new ArrayList<>();
+        for (int i = 0; i < numberOfRounds; i++) {
+            rounds.add(new Round(0, 0, 0, null, hits, outcomes));
+        }
+        return rounds;
+    }
+
+    private List<Hit> generateHits(int sizeOfHits, int prizeMultiplier) {
+        List<Hit> hits = new ArrayList<>();
+        for (int i = 1; i <= sizeOfHits; i++) {
+            Hit hit = new Hit(0, 0, i * prizeMultiplier);
+            hits.add(hit);
+        }
+        return hits;
     }
 
     private List<Outcome> generateOutcomes(int team1Won, int team2Won, int draw) {
@@ -102,4 +112,7 @@ public class TestStatisticsCalculator {
         }
         return outcomes;
     }
+
+    //endregion
+
 }

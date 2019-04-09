@@ -80,9 +80,10 @@ public class StatisticsCalculator {
         return o1 == o2 ? 1 : 0;
     }
 
-    private int countOccurrenceOfOutcomes(List<Round> rounds, Outcome o) {
+    public int countOccurrenceOfOutcomes(List<Round> rounds, Outcome o) {
         return (int) rounds.stream()
-                .flatMap(r -> r.getOutcomes().stream())
+                .map(Round::getOutcomes)
+                .flatMap(List::stream)
                 .filter(o::equals)
                 .count();
     }
