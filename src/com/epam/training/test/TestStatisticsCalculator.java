@@ -21,29 +21,21 @@ public class TestStatisticsCalculator {
 
     @Test
     public void testCalculateLargestPrize() {
-        generateTestForCalculateLargestPrize(3, 5);
         generateTestForCalculateLargestPrize(0, 0);
-        generateTestForCalculateLargestPrize(7, 1);
         generateTestForCalculateLargestPrize(104, 123);
         generateTestForCalculateLargestPrize(421, 141111);
     }
 
     @Test
     public void testCalculateStatisticsAboutAllOutcomes() {
-        generateTestForCalculateStatisticsAboutAllOutcomes(3, 10, 12, 3);
-        generateTestForCalculateStatisticsAboutAllOutcomes(5, 1000, 42, 24);
-        generateTestForCalculateStatisticsAboutAllOutcomes(100, 102, 0, 64);
-        generateTestForCalculateStatisticsAboutAllOutcomes(1024, 42, 1, 3);
-        generateTestForCalculateStatisticsAboutAllOutcomes(4, 53, 200, 0);
+        generateTestForCalculateStatisticsAboutAllOutcomes(1000, 500, 250, 250);
+        generateTestForCalculateStatisticsAboutAllOutcomes(1, 1, 1, 1);
+        generateTestForCalculateStatisticsAboutAllOutcomes(0, 0, 0, 0);
     }
 
     @Test
     public void testCountPercentage() {
         assertEquals("100%", statisticsCalculator.countPercentage(1, 1));
-        assertEquals("50%", statisticsCalculator.countPercentage(1, 2));
-        assertEquals("60%", statisticsCalculator.countPercentage(3, 5));
-        assertEquals("20,78%", statisticsCalculator.countPercentage(1059, 5097));
-        assertNotEquals("20,77%",statisticsCalculator.countPercentage(1059, 5097));
         assertEquals("3,37%", statisticsCalculator.countPercentage(198789, 5896213));
         assertEquals("0%", statisticsCalculator.countPercentage(0, 5));
     }
@@ -53,6 +45,8 @@ public class TestStatisticsCalculator {
         List<Outcome> outcomes = generateOutcomes(10,1,3);
         List<Round> rounds = generateRounds(5, null, outcomes);
         assertEquals(50, statisticsCalculator.countOccurrenceOfOutcomes(rounds, Outcome._1));
+        assertEquals(5, statisticsCalculator.countOccurrenceOfOutcomes(rounds, Outcome._2));
+        assertEquals(15, statisticsCalculator.countOccurrenceOfOutcomes(rounds, Outcome.X));
     }
 
     @After

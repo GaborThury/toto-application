@@ -20,17 +20,12 @@ public class TestUserGivenInputValidator {
 
     @Test(expected = IllegalArgumentException.class)
     public void validateDate1() {
-        testUserGivenInputValidator.validateDate("1000.01.01.");
+        testUserGivenInputValidator.validateDate("1997.12.31.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void validateDate2() {
         testUserGivenInputValidator.validateDate("2016.01.01.");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void validateDate3() {
-        testUserGivenInputValidator.validateDate("1000.01.01.");
     }
 
     @Test(expected = DateTimeParseException.class)
@@ -50,10 +45,7 @@ public class TestUserGivenInputValidator {
 
     @Test
     public void testValidateOutcomes() {
-        assertTrue(testUserGivenInputValidator.validateOutcomes("11111111111111"));
-        assertTrue(testUserGivenInputValidator.validateOutcomes("xxxxxxXXxxxxxx"));
-        assertTrue(testUserGivenInputValidator.validateOutcomes("22222222222222"));
-        assertTrue(testUserGivenInputValidator.validateOutcomes("12x12x12x12x11"));
+        assertTrue(testUserGivenInputValidator.validateOutcomes("xxXX1122x21211"));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -65,12 +57,6 @@ public class TestUserGivenInputValidator {
     public void testValidateOutcomes3() {
         testUserGivenInputValidator.validateOutcomes("1212xx11");
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testValidateOutcomes4() {
-        testUserGivenInputValidator.validateOutcomes("02121212121212");
-    }
-
 
     @After
     public void destroy(){
