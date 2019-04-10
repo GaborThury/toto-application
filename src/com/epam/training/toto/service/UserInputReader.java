@@ -21,7 +21,7 @@ public class UserInputReader {
     public LocalDate readDate() throws DateTimeParseException, IllegalArgumentException {
         while (true) {
             try {
-                System.out.println("Please enter a date from 1998 - 2015 (the format should be like this: 2000.12.31.):");
+                System.out.println("Please enter a date from 1998.01.01. - 2015.10.29. (the format should be like this: 2000.12.31.):");
                 String input = scanner.nextLine();
                 return userGivenInputValidator.validateDate(input);
             } catch (IllegalArgumentException e) {

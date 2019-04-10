@@ -11,6 +11,10 @@ public class StatisticsCalculator {
     private static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.##%");
 
     public Prize calculateLargestPrize(List<Round> rounds) {
+        if (rounds == null) {
+            return null;
+        }
+
         int amount = rounds.stream()
                 .map(Round::getHits)
                 .flatMap(List::stream)
@@ -68,7 +72,8 @@ public class StatisticsCalculator {
             amount = Objects.requireNonNull(round.getHits().stream()
                     .filter(f -> f.getHitCount() == finalHitCount)
                     .findFirst()
-                    .orElse(null)).getPrize();
+                    .orElse(null))
+                    .getPrize();
         }
 
         betResult.setHitcount(hitCount);

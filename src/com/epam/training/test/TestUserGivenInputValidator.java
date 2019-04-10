@@ -19,42 +19,42 @@ public class TestUserGivenInputValidator {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void validateDate1() {
+    public void testvalidateDateForOutOfValidRange() {
         testUserGivenInputValidator.validateDate("1997.12.31.");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void validateDate2() {
+    public void testvalidateDateForOutOfValidRange2() {
         testUserGivenInputValidator.validateDate("2016.01.01.");
     }
 
     @Test(expected = DateTimeParseException.class)
-    public void validateDate4() {
+    public void testvalidateDateForInvalidFormat() {
         testUserGivenInputValidator.validateDate("31.12.2000");
     }
 
     @Test(expected = DateTimeParseException.class)
-    public void validateDate5() {
+    public void testvalidateDateForInvalidDelimeter() {
         testUserGivenInputValidator.validateDate("2004-04-04");
     }
 
     @Test(expected = DateTimeParseException.class)
-    public void validateDate6() {
+    public void testvalidateDateForInvalidDelimeter2() {
         testUserGivenInputValidator.validateDate("2004_04_04");
     }
 
     @Test
-    public void testValidateOutcomes() {
+    public void testValidateOutcomesForNormalInput() {
         assertTrue(testUserGivenInputValidator.validateOutcomes("xxXX1122x21211"));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testValidateOutcomes2() {
+    public void testValidateOutcomesForInvalidInput() {
         testUserGivenInputValidator.validateOutcomes("31111222211211");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testValidateOutcomes3() {
+    public void testValidateOutcomesForNotEnoughCharacters() {
         testUserGivenInputValidator.validateOutcomes("1212xx11");
     }
 
