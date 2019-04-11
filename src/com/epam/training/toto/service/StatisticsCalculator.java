@@ -81,7 +81,7 @@ public class StatisticsCalculator {
         return betResult;
     }
 
-    private int compareOutcomes(Outcome o1, Outcome o2) {
+    public int compareOutcomes(Outcome o1, Outcome o2) {
         return o1 == o2 ? 1 : 0;
     }
 

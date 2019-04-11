@@ -6,11 +6,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class TestStatisticsCalculator {
 
@@ -27,6 +27,7 @@ public class TestStatisticsCalculator {
         int sizeOfHits = 7;
         List<Round> rounds = generateRounds(numberOfRounds, generateHits(sizeOfHits), null);
         Prize prize = new Prize(sizeOfHits, null);
+
         assertEquals(prize.getAmount(), statisticsCalculator.calculateLargestPrize(rounds).getAmount());
     }
 
@@ -75,32 +76,37 @@ public class TestStatisticsCalculator {
         assertEquals(numberOfRounds * draw, statisticsCalculator.countOccurrenceOfOutcomes(rounds, Outcome.X));
     }
 
-/*
-    WIP
-
     @Test
     public void testCalculateBetResults() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
-        LocalDate userDate = LocalDate.parse("2013.03.22.", dateTimeFormatter);
-        LocalDate roundInputDate1 = LocalDate.parse("2013.03.21.", dateTimeFormatter);
-        LocalDate roundInputDate2 = LocalDate.parse("2013.03.22.", dateTimeFormatter);
-        LocalDate roundInputDate3 = LocalDate.parse("2013.03.23.", dateTimeFormatter);
+        LocalDate userDate = LocalDate.of(2013, 3, 22);
 
-        List<Outcome> userBet = generateOutcomes(10,13,1);
+        // Need to create 3 localdate values, 1 is matching to user input
+        LocalDate roundInputDate1 = LocalDate.of(2013, 3, 21);
+        LocalDate roundInputDate2 = LocalDate.of(2013, 3, 22);
+        LocalDate roundInputDate3 = LocalDate.of(2013, 3, 23);
 
+        List<Outcome> userBet = generateOutcomes(10,3,1);
+
+        // Create 3 rounds with the 3 different dates
         List<Round> rounds = new ArrayList<>();
         rounds.add(new Round(0, 0, 0, roundInputDate1, generateHits(5), generateOutcomes(10, 1, 3)));
         rounds.add(new Round(0, 0, 0, roundInputDate2, generateHits(5), generateOutcomes(10, 2, 2)));
         rounds.add(new Round(0, 0, 0, roundInputDate3, generateHits(5), generateOutcomes(5, 4, 5)));
 
+        // According to the given values above, this should be the result
         BetResult betResult = new BetResult();
         betResult.setAmount(2);
         betResult.setHitcount(13);
 
         assertEquals(betResult.getAmount(), statisticsCalculator.calculateBetResults(rounds, userDate, userBet).getAmount());
         assertEquals(betResult.getHitcount(), statisticsCalculator.calculateBetResults(rounds, userDate, userBet).getHitcount());
-    }*/
+    }
 
+    @Test
+    public void testCompareOutcomes() {
+        assertEquals(1, statisticsCalculator.compareOutcomes(Outcome._1, Outcome._1));
+        assertEquals(0, statisticsCalculator.compareOutcomes(Outcome._2, Outcome.X));
+    }
 
     @After
     public void destroy() {
