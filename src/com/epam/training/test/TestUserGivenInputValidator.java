@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import static org.junit.Assert.*;
@@ -17,29 +18,34 @@ public class TestUserGivenInputValidator {
         testUserGivenInputValidator = new UserGivenInputValidator();
     }
 
+    @Test
+    public void testValidateDateForRightInput() {
+        LocalDate localDate = LocalDate.of(2003, 11, 13);
+        assertEquals(localDate, testUserGivenInputValidator.validateDate("2003.11.13."));
+    }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testvalidateDateForOutOfValidRange() {
+    public void testValidateDateForOutOfValidRange() {
         testUserGivenInputValidator.validateDate("1997.12.31.");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testvalidateDateForOutOfValidRange2() {
+    public void testValidateDateForOutOfValidRange2() {
         testUserGivenInputValidator.validateDate("2016.01.01.");
     }
 
     @Test(expected = DateTimeParseException.class)
-    public void testvalidateDateForInvalidFormat() {
+    public void testValidateDateForInvalidFormat() {
         testUserGivenInputValidator.validateDate("31.12.2000");
     }
 
     @Test(expected = DateTimeParseException.class)
-    public void testvalidateDateForInvalidDelimeter() {
+    public void testValidateDateForInvalidDelimeter() {
         testUserGivenInputValidator.validateDate("2004-04-04");
     }
 
     @Test(expected = DateTimeParseException.class)
-    public void testvalidateDateForInvalidDelimeter2() {
+    public void testValidateDateForInvalidDelimeter2() {
         testUserGivenInputValidator.validateDate("2004_04_04");
     }
 
